@@ -41,7 +41,7 @@ func startApp() chan error {
 }
 
 func initService() error {
-	rpcAddress := ":4040"
+	rpcAddress := "port-domain-service:4040"
 
 	portService, err := service.NewPortService(rpcAddress)
 	if err != nil {

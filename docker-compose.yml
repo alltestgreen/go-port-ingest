@@ -1,0 +1,27 @@
+version: "3.7"
+
+networks:
+  default:
+    driver: bridge
+
+services:
+
+  port-client-api:
+    build:
+      context: .
+      dockerfile: port-client-api.Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - default
+
+  port-domain-service:
+    build:
+      context: .
+      dockerfile: port-domain-service.Dockerfile
+    ports:
+      - "4040:4040"
+    restart: unless-stopped
+    networks:
+      - default
