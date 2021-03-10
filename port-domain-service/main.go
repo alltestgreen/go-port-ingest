@@ -2,12 +2,15 @@ package main
 
 import (
 	"log"
+	"net"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/alltestgreen/go-port-ingest/port-client-api/handler"
-	"github.com/alltestgreen/go-port-ingest/port-client-api/service"
+	"google.golang.org/grpc"
+
+	"github.com/alltestgreen/go-port-ingest/port-domain-service/server"
+	"github.com/alltestgreen/go-port-ingest/proto"
 )
 
 func main() {
@@ -41,13 +44,19 @@ func startApp() chan error {
 }
 
 func initService() error {
-	rpcAddress := ":4040"
+	address := ":4040"
 
-	portService, err := service.NewPortService(rpcAddress)
+	listener, err := net.Listen("tcp", address)
 	if err != nil {
-		return err
+		log.Fatalf("failed to listen: %v", err)
 	}
-	return handler.ServeEndpoints(portService)
+
+	srv := grpc.NewServer()
+	proto.RegisterPortServiceServer(srv, server.NewServer())
+
+	log.Printf("gRPC server started listening on (%s)", address)
+
+	return srv.Serve(listener)
 }
 
 // clean up resources before the application stopped

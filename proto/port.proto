@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "proto";
+
+message Port {
+  string id = 1;
+  string name = 2;
+  string city = 3;
+  string country = 4;
+  repeated string alias = 5;
+  repeated string regions = 6;
+  repeated double coordinates = 7;
+  string province = 8;
+  string timezone = 9;
+  repeated string unlocs = 10;
+  string code = 11;
+}
+
+message SubmitPortResponse {
+  int32 code = 1;
+  string details = 2;
+}
+
+service PortService {
+  rpc SubmitPort(Port) returns (SubmitPortResponse);
+}

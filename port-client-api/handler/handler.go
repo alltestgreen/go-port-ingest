@@ -45,6 +45,7 @@ func (h handler) handlePortsSubmission(c *gin.Context) {
 	}
 }
 
+// parseJsonStream tries to parse the json payload and sends off successfully parsed items to the service asynchronously
 func (h handler) parseJsonStream(ctx context.Context, body io.ReadCloser) error {
 	dec := json.NewDecoder(body)
 
